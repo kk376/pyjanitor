@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+-   [INF] Match the Python trove classifiers and the ruff, black, and pixi minimum versions to the supported range, Python 3.11, 3.12, and 3.13.
+
 ## [v0.32.69] - 2026-11-01
 
 -   [ENH] Answer `conditional_join(..., keep="any")` with exactly two range predicates by a staircase instead of a window search. After sorting the right side by the first column, one running min/max of the second column gives every left row its answer with a single binary search, and the left side is never sorted. Joins with an equality key, a third predicate, another `keep` mode, or non-numeric columns keep the window kernels. `keep="any"` returns some matching right row, not necessarily the first. Requires a `janitor-rs` release with `range_exists_indices`. PR #1853 @samukweku
