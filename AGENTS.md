@@ -117,6 +117,7 @@ pixi run <command>
 | `engineering` | Engineering module development | unyt |
 | `spark` | PySpark development | pyspark |
 | `py311`/`py312`/`py313` | Python version testing | Specific Python versions |
+| `py313-polars2` | Polars 2.x test coverage | Python 3.13, Polars 2.x, pytest |
 
 To run commands in a specific environment:
 
@@ -869,6 +870,19 @@ includes nullable `Int64` and `Float64` columns and excludes booleans.
 **Recommendation**: Choose adorn targets with `adorn_data_positions` and
 assign with `DataFrame.isetitem`. Pair `adorn_ns` counts with
 `adorn_count_pairs`.
+
+### [2026-10-31] Polars 2 CI is a separate Pixi environment
+
+**Context**: Adding CI coverage for Polars 2.x (issue #1818).
+**Learning**: Pixi unions dependency requirements from every feature in an
+environment. The `tests` feature pins `polars>=1.37.1,<2`, and an inline
+Polars 2 requirement does not override that pin. Moving the pin into a
+shared `polars1` feature changes every existing environment and rewrites
+`pixi.lock`. `py313-polars2` omits the `tests` feature and declares Polars
+2, `pandas>=3`, pyarrow, and pytest on that environment alone.
+**Recommendation**: Leave `py311`, `py312`, and `py313` on the `tests`
+feature so they stay on the locked Polars 1.41.1 line. Run `tests/polars`
+in `py313-polars2`.
 
 ## Version History
 

@@ -220,6 +220,27 @@ py311 = { features = ["tests", "setup", "py311"] }
 py312 = { features = ["tests", "setup", "py312"] }
 py313 = { features = ["tests", "setup", "py313"] }
 
+# The tests feature pins Polars 1.x. This environment omits that feature so
+# the Polars 2 pin is not unioned with >=1.37.1,<2. It only installs what
+# tests/polars imports, which keeps the lockfile delta to this environment.
+[tool.pixi.environments.py313-polars2]
+features = ["py313"]
+no-default-feature = true
+
+[tool.pixi.environments.py313-polars2.dependencies]
+pandas = ">=3"
+numpy = "*"
+scipy = "*"
+polars = ">=2,<3"
+pytest = ">=9.0.2,<10"
+pytest-xdist = ">=3.8.0,<4"
+
+[tool.pixi.environments.py313-polars2.pypi-dependencies]
+pyjanitor = { path = ".", editable = true }
+# Wheel, not the conda-forge Arrow stack, so the lock does not gain a
+# second copy of libarrow and its AWS/gRPC dependencies.
+pyarrow = ">=16"
+
 [tool.coverage.run]
 omit = [
     "tests/*",

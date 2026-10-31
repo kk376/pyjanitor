@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+-   [TST] Run `tests/polars` in CI on Python 3.13 with Polars 2.x. The py311, py312, and py313 environments keep Polars 1.41.1. - Issue #1818
+-   [BUG] Build the Polars `pivot_longer` name spec with `list.to_struct(fields=...)`. Polars 2 removed the `upper_bound` argument. - Issue #1818
+
 ## [v0.32.69] - 2026-11-01
 
 -   [ENH] Answer `conditional_join(..., keep="any")` with exactly two range predicates by a staircase instead of a window search. After sorting the right side by the first column, one running min/max of the second column gives every left row its answer with a single binary search, and the left side is never sorted. Joins with an equality key, a third predicate, another `keep` mode, or non-numeric columns keep the window kernels. `keep="any"` returns some matching right row, not necessarily the first. Requires a `janitor-rs` release with `range_exists_indices`. PR #1853 @samukweku
