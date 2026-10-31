@@ -20,7 +20,70 @@ Fork the [`pyjanitor` repository][repo] on GitHub, then clone your fork locally:
 ```bash
 git clone git@github.com:<your_github_username>/pyjanitor.git
 cd pyjanitor
+git remote add upstream https://github.com/pyjanitor-devs/pyjanitor.git
+git fetch upstream
 ```
+
+### Sync your fork
+
+`origin` is your fork.
+`upstream` is the pyjanitor repository.
+The default branch is `dev`.
+Keep local `dev` as a fast-forward of `upstream/dev`.
+
+```bash
+git checkout dev
+git fetch upstream
+git merge --ff-only upstream/dev
+git push origin dev
+```
+
+If `git push origin dev` is rejected,
+the fork's `dev` has commits that are not on upstream.
+Replace that branch with upstream's `dev` and push it:
+
+```bash
+git checkout dev
+git fetch upstream
+git reset --hard upstream/dev
+git push --force-with-lease origin dev
+```
+
+`git reset --hard` drops commits that exist only on your local `dev`.
+
+Rebase a feature branch onto `upstream/dev`, then push it to your fork:
+
+```bash
+git checkout <name-of-your-bugfix-or-feature>
+git fetch upstream
+git rebase upstream/dev
+git push origin <name-of-your-bugfix-or-feature>
+```
+
+If that branch is already on your fork, the rebase rewrote its history.
+Update it with:
+
+```bash
+git push --force-with-lease origin <name-of-your-bugfix-or-feature>
+```
+
+A feature branch can use `git merge upstream/dev`
+when you want to keep the previous commits and record a merge commit.
+A merge does not need a force push.
+
+If the rebase stops on a conflict,
+fix the marked files, stage them with `git add`,
+and run `git rebase --continue`.
+`git rebase --abort` restores the branch.
+The [Atlassian guide to forks and upstreams][forks]
+covers this workflow, including conflicts.
+
+[forks]: https://www.atlassian.com/git/tutorials/git-forks-and-upstreams
+
+GitHub's **Sync fork** button on your fork's page
+updates the fork's `dev` branch on GitHub.
+After that, run `git fetch origin` and rebase your feature branch
+onto `origin/dev`, then push it as shown above.
 
 ## Step 2: Set Up the Development Environment
 
@@ -74,11 +137,14 @@ This helps:
 
 ## Step 5: Create a Feature Branch
 
-Create a new branch from the `dev` branch for your work:
+Create a new branch from an up-to-date `upstream/dev`.
+See [Sync your fork](#sync-your-fork).
+`--no-track` leaves the branch untracked,
+so later pushes name your fork (`origin`) explicitly.
 
 ```bash
-git fetch origin dev
-git checkout -b <name-of-your-bugfix-or-feature> origin/dev
+git fetch upstream
+git checkout --no-track -b <name-of-your-bugfix-or-feature> upstream/dev
 ```
 
 Use a descriptive branch name that indicates what you're working on
@@ -101,12 +167,8 @@ As you write code, keep these guidelines in mind:
 ### Commit Practices
 
 - **Commit early and often**: Make frequent, smaller commits with clear messages
-- **Stay updated**: Regularly sync with the `dev` branch:
-
-  ```bash
-  git fetch origin dev
-  git rebase origin/dev
-  ```
+- **Stay updated**: Rebase your branch onto `upstream/dev` before you push.
+  See [Sync your fork](#sync-your-fork).
 
 ### Write Tests
 
