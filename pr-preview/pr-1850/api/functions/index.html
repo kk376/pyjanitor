@@ -15669,6 +15669,44 @@ together), with 1 million intervals on each side:</p>
 </tr>
 </tbody>
 </table>
+<p>On real data, counting overlaps (median of repeated runs, same machine):</p>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th style="text-align: right;">Overlapping pairs</th>
+<th style="text-align: right;">Boundaries</th>
+<th style="text-align: right;"><code>join_agg</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AIList ex-rna, ex-anno</td>
+<td style="text-align: right;">307 million</td>
+<td style="text-align: right;">0.25 s</td>
+<td style="text-align: right;">1.4 s</td>
+</tr>
+<tr>
+<td>AIList ex-anno, ex-rna</td>
+<td style="text-align: right;">307 million</td>
+<td style="text-align: right;">0.32 s</td>
+<td style="text-align: right;">3.7 s</td>
+</tr>
+<tr>
+<td>Aarhus books, 365 days</td>
+<td style="text-align: right;">59 million</td>
+<td style="text-align: right;">0.046 s</td>
+<td style="text-align: right;">0.79 s</td>
+</tr>
+</tbody>
+</table>
+<p>The genomic data is from the <a href="https://doi.org/10.1093/bioinformatics/btz407">AIList paper</a> and its
+<a href="https://github.com/databio/AIList">repository</a>: 9.9 million ex-rna and 1.2 million ex-anno
+intervals, joined within each chromosome, with the first name as the
+left side. The books are the 2.3 million Aarhus library loans of 2013
+used in the <a href="https://doi.org/10.1007/s00778-023-00798-w">HINT paper</a> and its <a href="https://github.com/pbour/hint/tree/main/samples">sample data</a>,
+counted against the 365 days of the year. In every case the boundary
+counts equal the <code>join_agg</code> counts.</p>
 <p>A point is an interval with equal start and end, so the same code counts
 how many intervals contain each point. The limits:</p>
 <ul>
@@ -16098,7 +16136,27 @@ how many intervals contain each point. The limits:</p>
 <span class="normal">2000</span>
 <span class="normal">2001</span>
 <span class="normal">2002</span>
-<span class="normal">2003</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@pf</span><span class="o">.</span><span class="n">register_dataframe_method</span>
+<span class="normal">2003</span>
+<span class="normal">2004</span>
+<span class="normal">2005</span>
+<span class="normal">2006</span>
+<span class="normal">2007</span>
+<span class="normal">2008</span>
+<span class="normal">2009</span>
+<span class="normal">2010</span>
+<span class="normal">2011</span>
+<span class="normal">2012</span>
+<span class="normal">2013</span>
+<span class="normal">2014</span>
+<span class="normal">2015</span>
+<span class="normal">2016</span>
+<span class="normal">2017</span>
+<span class="normal">2018</span>
+<span class="normal">2019</span>
+<span class="normal">2020</span>
+<span class="normal">2021</span>
+<span class="normal">2022</span>
+<span class="normal">2023</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@pf</span><span class="o">.</span><span class="n">register_dataframe_method</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">join_agg</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">right</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span>
@@ -16354,6 +16412,10 @@ how many intervals contain each point. The limits:</p>
 
 <span class="sd">            [so-question]: https://stackoverflow.com/questions/69194678/python-fast-aggregation-of-many-observations-to-daily-sum</span>
 <span class="sd">            [so-answer]: https://stackoverflow.com/a/69195082</span>
+<span class="sd">            [ailist-paper]: https://doi.org/10.1093/bioinformatics/btz407</span>
+<span class="sd">            [ailist-repo]: https://github.com/databio/AIList</span>
+<span class="sd">            [hint-paper]: https://doi.org/10.1007/s00778-023-00798-w</span>
+<span class="sd">            [hint-data]: https://github.com/pbour/hint/tree/main/samples</span>
 
 <span class="sd">        !!! tip &quot;Counting overlaps by boundaries&quot;</span>
 
@@ -16473,6 +16535,22 @@ how many intervals contain each point. The limits:</p>
 <span class="sd">            |----------------------:|------------------:|-----------:|-------------:|</span>
 <span class="sd">            | about 10              | 10 million        | 0.25 s     | 0.3 s        |</span>
 <span class="sd">            | about 1,000           | 1 billion         | 0.24 s     | 7.5 s        |</span>
+
+<span class="sd">            On real data, counting overlaps (median of repeated runs, same machine):</span>
+
+<span class="sd">            | Data                   | Overlapping pairs | Boundaries | ``join_agg`` |</span>
+<span class="sd">            |------------------------|------------------:|-----------:|-------------:|</span>
+<span class="sd">            | AIList ex-rna, ex-anno | 307 million       | 0.25 s     | 1.4 s        |</span>
+<span class="sd">            | AIList ex-anno, ex-rna | 307 million       | 0.32 s     | 3.7 s        |</span>
+<span class="sd">            | Aarhus books, 365 days | 59 million        | 0.046 s    | 0.79 s       |</span>
+
+<span class="sd">            The genomic data is from the [AIList paper][ailist-paper] and its</span>
+<span class="sd">            [repository][ailist-repo]: 9.9 million ex-rna and 1.2 million ex-anno</span>
+<span class="sd">            intervals, joined within each chromosome, with the first name as the</span>
+<span class="sd">            left side. The books are the 2.3 million Aarhus library loans of 2013</span>
+<span class="sd">            used in the [HINT paper][hint-paper] and its [sample data][hint-data],</span>
+<span class="sd">            counted against the 365 days of the year. In every case the boundary</span>
+<span class="sd">            counts equal the ``join_agg`` counts.</span>
 
 <span class="sd">            A point is an interval with equal start and end, so the same code counts</span>
 <span class="sd">            how many intervals contain each point. The limits:</span>
