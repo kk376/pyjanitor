@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+-   [BUG] Make `complete` safe for grouped frames and partial `fill_value` dictionaries, and emit one `FutureWarning` for the deprecated `by` argument. Grouped calls no longer warn that `by` was used, a dictionary that names only some columns no longer raises `KeyError`, and `complete(..., by=...)` no longer also warns about `expand`. - Issues #1669, #1788 @SumanGouda (#1700, #1790)
+-   [BUG] `complete(..., explicit=False)` adds a categorical fill value only when that value is not already one of the column's categories. - PR #1834
+
 ## [v0.32.69] - 2026-11-01
 
 -   [ENH] Answer `conditional_join(..., keep="any")` with exactly two range predicates by a staircase instead of a window search. After sorting the right side by the first column, one running min/max of the second column gives every left row its answer with a single binary search, and the left side is never sorted. Joins with an equality key, a third predicate, another `keep` mode, or non-numeric columns keep the window kernels. `keep="any"` returns some matching right row, not necessarily the first. Requires a `janitor-rs` release with `range_exists_indices`. PR #1853 @samukweku
