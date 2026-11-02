@@ -3183,6 +3183,9 @@
 
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
 <h2 id="unreleased"><a href="https://github.com/pyjanitor-devs/pyjanitor/compare/v0.32.69...HEAD">Unreleased</a><a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[PERF] Use pandas' default unstable sort for non-monotonic conditional-join anchors. - PR #1856 @samukweku</li>
+</ul>
 <h2 id="v03269-2026-11-01"><a href="https://github.com/pyjanitor-devs/pyjanitor/compare/v0.32.68...v0.32.69">v0.32.69</a> - 2026-11-01<a class="headerlink" href="#v03269-2026-11-01" title="Permanent link">&para;</a></h2>
 <ul>
 <li>[ENH] Answer <code>conditional_join(..., keep="any")</code> with exactly two range predicates by a staircase instead of a window search. After sorting the right side by the first column, one running min/max of the second column gives every left row its answer with a single binary search, and the left side is never sorted. Joins with an equality key, a third predicate, another <code>keep</code> mode, or non-numeric columns keep the window kernels. <code>keep="any"</code> returns some matching right row, not necessarily the first. Requires a <code>janitor-rs</code> release with <code>range_exists_indices</code>. PR #1853 @samukweku</li>
